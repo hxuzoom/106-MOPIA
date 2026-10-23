@@ -14,7 +14,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..', 'bis-ui')));
 app.use(express.json());
 app.disable('x-powered-by');
 const HOST = 'localhost';
@@ -48,7 +48,7 @@ app.get('/api/metrics', (req, res) => {
     });
 });
 
-app.get('/api/resident', (req, res) => {
+app.get('/api/residents', (req, res) => {
     const query = `
         SELECT r.resident_id, r.first_name, r.middle_name, r.last_name,
         p.purok_name, r.civil_status, r.contact_no, r.status

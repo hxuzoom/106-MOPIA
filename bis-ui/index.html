@@ -52,28 +52,28 @@
                         <div class="metric-card">
                             <div class="metric-icon blue"><i class="fa-solid fa-users"></i></div>
                             <div class="metric-info">
-                                <h3>15</h3>
+                                <h3 id="metric-residents">-</h3>
                                 <p>Total Residents</p>
                             </div>
                         </div>
                         <div class="metric-card">
                             <div class="metric-icon green"><i class="fa-solid fa-house-chimney"></i></div>
                             <div class="metric-info">
-                                <h3>10</h3>
+                                <h3 id="metric-households">-</h3>
                                 <p>Households</p>
                             </div>
                         </div>
                         <div class="metric-card">
                             <div class="metric-icon orange"><i class="fa-solid fa-store"></i></div>
                             <div class="metric-info">
-                                <h3>5</h3>
+                                <h3 id="metric-businesses">-</h3>
                                 <p>Registered Businesses</p>
                             </div>
                         </div>
                         <div class="metric-card">
                             <div class="metric-icon red"><i class="fa-solid fa-triangle-exclamation"></i></div>
                             <div class="metric-info">
-                                <h3>5</h3>
+                                <h3 id="metric-blotter">-</h3>
                                 <p>Blotter Cases</p>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                 <section id="residents" class="view-section">
                     <div class="table-section">
                         <div class="table-header">
-                            <h2>Residents Directory (15 Records)</h2>
+                            <h2>Residents Directory (<span id="residents-count">0</span> Records)</h2>
                             <button class="btn-primary"><i class="fa-solid fa-plus"></i> Add Resident</button>
                         </div>
                         <div class="table-responsive">
@@ -106,7 +106,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    <tr><td>1001</td><td>Juan Santos Dela Cruz</td><td>Purok Maligaya</td><td>Married</td><td>09171234567</td><td><span class="badge active">Resident</span></td></tr>
+                                    <tr><td>1002</td><td>Maria Flores Dela Cruz</td><td>Purok Maligaya</td><td>Married</td><td>09172345678</td><td><span class="badge active">Resident</span></td></tr>
+                                    <tr><td>1003</td><td>Antonio Reyes Luna</td><td>Purok Maligaya</td><td>Married</td><td>09183456789</td><td><span class="badge active">Resident</span></td></tr>
+                                    <tr><td>1004</td><td>Anna Bautista Santos</td><td>Purok Pag-asa</td><td>Separated</td><td>09206789012</td><td><span class="badge active">Resident</span></td></tr>
                                     <tr><td>1005</td><td>Luz Villanueva Torres</td><td>Purok Masagana</td><td>Widowed</td><td>09241234567</td><td><span class="badge active">Resident</span></td></tr>
                                 </tbody>
                             </table>
@@ -117,7 +120,7 @@
                 <section id="businesses" class="view-section">
                     <div class="table-section">
                         <div class="table-header">
-                            <h2>Registered Businesses (10 Records)</h2>
+                            <h2>Registered Businesses (<span id="business-count">0</span> Records)</h2>
                             <button class="btn-primary"><i class="fa-solid fa-plus"></i> Add Business</button>
                         </div>
                         <div class="table-responsive">
@@ -131,12 +134,7 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr><td>1001</td><td>Ana Sari-Sari Store</td><td>Retail Store</td><td>45 Mabini Street</td><td><span class="badge active">Active</span></td></tr>
-                                    <tr><td>1002</td><td>Dela Cruz Hardware</td><td>Hardware</td><td>123 Rizal Street</td><td><span class="badge active">Active</span></td></tr>
-                                    <tr><td>1003</td><td>Grace Tailoring Services</td><td>Personal Services</td><td>89 Aguinaldo Avenue</td><td><span class="badge active">Active</span></td></tr>
-                                    <tr><td>1004</td><td>Bautista Fresh Bakery</td><td>Food & Bakery</td><td>11 Roxas Boulevard</td><td><span class="badge active">Active</span></td></tr>
-                                </tbody>
+                                <tbody id="business-table-body"></tbody>
                             </table>
                         </div>
                     </div>
@@ -145,7 +143,7 @@
                 <section id="blotter" class="view-section">
                     <div class="table-section">
                         <div class="table-header">
-                            <h2>Blotter Reports & Incidents (5 Records)</h2>
+                            <h2>Blotter Reports & Incidents (<span id="blotter-count">0</span> Records)</h2>
                             <button class="btn-primary"><i class="fa-solid fa-plus"></i> File Case</button>
                         </div>
                         <div class="table-responsive">
@@ -159,11 +157,7 @@
                                         <th>Status</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr><td>BLT-2026-001</td><td>Maria Dela Cruz</td><td>Mario Santos</td><td>Noise Complaint</td><td><span class="badge settled">Settled</span></td></tr>
-                                    <tr><td>BLT-2026-002</td><td>Ana Santos</td><td>Pedro Penduko</td><td>Property Damage</td><td><span class="badge settled">Settled</span></td></tr>
-                                    <tr><td>BLT-2026-003</td><td>Sophia Gonzales</td><td>Danilo Bautista</td><td>Boundary Dispute</td><td><span class="badge pending">Pending</span></td></tr>
-                                </tbody>
+                                <tbody id="blotter-table-body"></tbody>
                             </table>
                         </div>
                     </div>
@@ -198,6 +192,12 @@
             }
         </script>
     <script>
+    function esc(value) {
+        return String(value ?? '').replace(/[&<>"']/g, ch => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[ch]));
+    }
+
     async function loadMetrics() {
         try {
             let response = await fetch('/api/metrics');
@@ -211,7 +211,7 @@
             document.getElementById('metric-residents').innerText = data.residents;
             document.getElementById('metric-households').innerText = data.households;
             document.getElementById('metric-businesses').innerText = data.businesses;
-            document.getElementById('metric-blotter').innerText = data.blotter;
+            document.getElementById('metric-blotter').innerText = data.blotter_reports;
 
         } catch (err) {
             console.error("Error loading metrics:", err);
@@ -230,18 +230,20 @@
             let tbody = document.getElementById('residents-table-body');
 
             tbody.innerHTML = '';
+            document.getElementById('residents-count').innerText = residents.length;
 
             residents.forEach(res => {
                 let fullName = `${res.first_name} ${res.middle_name ? res.middle_name + ' ' : ''}${res.last_name}`;
+                let badgeClass = res.status === 'Resident' ? 'active' : 'pending';
 
                 tbody.innerHTML += `
                     <tr>
-                        <td>${res.resident_id}</td>
-                        <td>${fullName}</td>
-                        <td>${res.purok_name ?? 'N/A'}</td>
-                        <td>${res.civil_status ?? 'N/A'}</td>
-                        <td>${res.contact_no || 'N/A'}</td>
-                        <td><span class="badge active">${res.status}</span></td>
+                        <td>${esc(res.resident_id)}</td>
+                        <td>${esc(fullName)}</td>
+                        <td>${esc(res.purok_name ?? 'N/A')}</td>
+                        <td>${esc(res.civil_status ?? 'N/A')}</td>
+                        <td>${esc(res.contact_no || 'N/A')}</td>
+                        <td><span class="badge ${badgeClass}">${esc(res.status)}</span></td>
                     </tr>
                 `;
             });
@@ -263,15 +265,18 @@
             let tbody = document.getElementById('business-table-body');
 
             tbody.innerHTML = '';
+            document.getElementById('business-count').innerText = businesses.length;
 
             businesses.forEach(b => {
+                let badgeClass = b.status === 'Active' ? 'active' : 'pending';
+
                 tbody.innerHTML += `
                     <tr>
-                        <td>${b.business_id}</td>
-                        <td>${b.business_name}</td>
-                        <td>${b.business_type}</td>
-                        <td>${b.business_address}</td>
-                        <td><span class="badge active">${b.status}</span></td>
+                        <td>${esc(b.business_id)}</td>
+                        <td>${esc(b.business_name)}</td>
+                        <td>${esc(b.business_type ?? 'N/A')}</td>
+                        <td>${esc(b.business_address ?? 'N/A')}</td>
+                        <td><span class="badge ${badgeClass}">${esc(b.status)}</span></td>
                     </tr>
                 `;
             });
@@ -293,17 +298,18 @@
             let tbody = document.getElementById('blotter-table-body');
 
             tbody.innerHTML = '';
+            document.getElementById('blotter-count').innerText = reports.length;
 
             reports.forEach(r => {
                 let badgeClass = r.status === 'Settled' ? 'settled' : 'pending';
 
                 tbody.innerHTML += `
                     <tr>
-                        <td>${r.case_number}</td>
-                        <td>${r.complainant_name}</td>
-                        <td>${r.respondent_name}</td>
-                        <td>${r.incident_type}</td>
-                        <td><span class="badge ${badgeClass}">${r.status}</span></td>
+                        <td>${esc(r.case_number)}</td>
+                        <td>${esc(r.complainant_name)}</td>
+                        <td>${esc(r.respondent_name)}</td>
+                        <td>${esc(r.incident_type)}</td>
+                        <td><span class="badge ${badgeClass}">${esc(r.status)}</span></td>
                     </tr>
                 `;
             });
