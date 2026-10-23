@@ -68,7 +68,7 @@ app.get('/api/blotter', (req, res) => {
     });
 });
 
-app.get('/api/business', (req, res) => {
+app.get('/api/businesses', (req, res) => {
     db.all("SELECT * FROM businesses", [], (err, rows) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(rows);
